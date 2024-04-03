@@ -14,36 +14,102 @@
    Böylelikle, tablolar arasında Parent- Child ilişkisi oluşur.
 */
 
-CREATE TABLE peynirler (
-  id INT PRIMARY KEY,	--uniqe ve not null
-  isim VARCHAR(30) UNIQUE,
-  tur VARCHAR(25) NOT NULL,
-  koken VARCHAR(20),
-  sertlik INT CHECK (sertlik BETWEEN 1 AND 5),
-  fiyat DECIMAL(5,2)
-);
+create table peynirler(
+id int primary key,
+	isim varchar(50) unique,
+	tur varchar(50) not null,
+	koken varchar(50),
+	sertlik int check(sertlik between 1 and 5),
+	fiyat decimal(5,2)
+)
+select * from peynirler;
 
-INSERT INTO peynirler (id, isim, tur, koken, sertlik, fiyat) VALUES
-  (1, 'Beyaz Peynir', 'Yumuşak', 'Ardahan', 3, 15.50),
-  (2, 'Kaşar Peyniri', 'Yarı Sert', 'Göle', 4, 22.00),
-  (3, 'Cheddar Peyniri', 'Sert', 'Kars', 5, 28.50),
-  (4, 'Mozzarella Peyniri', 'Yumuşak', 'Ardahan', 2, 18.00),
-  (5, 'Gouda Peyniri', 'Yarı Sert', 'Göle', 4, 25.00),
-  (6, 'Parmesan Peyniri', 'Sert', 'Kars', 5, 32.00);
-  
-  select * from peynirler;
+--id girmeden data giriniz
+insert into peynirler(isim, tur, koken, sertlik, fiyat) values
+('Beyaz Peynir', 'Yumuşak', 'Ardahan', 3,150.50)
 
---id eklemedik, oysa id primarykey yani uniqe ve not null
-insert into peynirler values  ('Beyaz Peynir', 'Yumuşak', 'Ardahan', 3, 15.50); 
+-- dogru kod girisi
+insert into peynirler(id,isim, tur, koken, sertlik, fiyat) values
+(1,'Beyaz Peynir', 'Yumuşak', 'Ardahan', 3,150.50)
 
---isim kısmına Kaşar Peyniri ekleyemedik. daha önce vardı. uniq olmalıydı
-insert into peynirler values  (7, 'Kaşar Peyniri', 'Yarı Sert', 'Göle', 3, 42.00); 
+--isim kismina 'Beyaz Peynir' olan data ekleyin
+insert into peynirler(id,isim, tur, koken, sertlik, fiyat) values
+(2,'Beyaz Peynir', 'Yumuşak', 'Ardahan', 3,150.50)
 
---tur bos biraktik. hata verdi. tur nut null olmaliydi
-insert into peynirler values  (8, 'Çeçil Peyniri', 'Ardahan', 5, 28.50);
+--doğru kod
+insert into peynirler(id,isim, tur, koken, sertlik, fiyat) values
+(2,'Kaşar Peyniri', 'Yumuşak', 'Ardahan', 5,350.50)
+select * from peynirler;
 
---sertlik 1 ile 5 arasi olmali 9 giremeyiz, check var burada
-insert into peynirler values  (9, 'Tuluk Peyniri', 'Yumuşak', 'Ardahan', 9, 18.00);
+--tur kismini bos birakarak data ekleyin
+insert into peynirler(id,isim, koken, sertlik, fiyat) values
+(3,'Çeçil Peyniri', 'Göle', 4, 175.50)
+
+--dogru kod
+insert into peynirler(id,isim, tur,koken, sertlik, fiyat) values
+(3,'Çeçil Peyniri', 'Sert','Göle', 4, 175.50)
+
+--check kisitlamasini ihlal eden data girin
+insert into peynirler(id,isim, tur,koken, sertlik, fiyat) values
+(4,'Tuluk Peyniri', 'Yarı Sert','Kars', 9, 479.50)
+
+--dogru kod
+insert into peynirler(id,isim, tur,koken, sertlik, fiyat) values
+(4,'Tuluk Peyniri', 'Yarı Sert','Kars', 3, 479.50)
+select * from peynirler;
+
+/*
+--------------------------------------------
+--------------------------------------------
+*/
+create table peynir(
+id int,
+	isim varchar(50) unique,
+	tur varchar(50) not null,
+	koken varchar(50),
+	sertlik int check(sertlik between 1 and 5),
+	fiyat decimal(5,2),
+	constraint composite_primarykey primary key(koken,fiyat)
+)
+select * from peynir;
+
+--check degerini ihlal eden data ekle
+insert into peynir values(1,'Beyaz Peynir', 'Sert', 'Ardahan',8,185.20)
+
+--dogru kod
+insert into peynir values(1,'Beyaz Peynir', 'Sert', 'Ardahan',1,185.20)
+
+
+--isim ayni olan data ekle
+insert into peynir values(2,'Beyaz Peynir', 'Yarı Sert', 'Çıldır',3,225.10)
+
+--dogru kod
+insert into peynir values(2,'Kaşar Peyniri', 'Yarı Sert', 'Çıldır',3,225.10)
+
+--tur not null birakip data ekle
+insert into peynir values(2,'Cheddar Peyniri', 'Kars',5,125.99)
+
+--dogru kod
+insert into peynir values(2,'Cheddar Peyniri', 'Yarı Yumuşak', 'Kars',5,125.99)
+
+
+--composite primary key ihlali yap. koken ve fiyat ayni deger gir
+insert into peynir values(4,'Gouda Peyniri', 'Yarı Yumuşak', 'Ardahan',5,185.20)
+
+--dogru kod
+insert into peynir values(4,'Gouda Peyniri', 'Yarı Yumuşak', 'Hanak',5,185.20)
+
+--composite primary key ihlali yap. koken ve fiyat ayni deger gir
+insert into peynir values(5,'Parmesan Peyniri', 'Sert', 'Kars',5,125.99)
+
+-- dogru kod
+insert into peynir values(5,'Parmesan Peyniri', 'Sert', 'Kars',5,80.99)
+select * from peynir;
+
+
+
+
+
 
 
 
