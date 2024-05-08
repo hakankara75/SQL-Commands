@@ -2,6 +2,7 @@
 AGGREGATE METHODU
 
 AGGREGATE METHODLARI: Database'de bir çok değer içinden tek bir değer elde etmek istediğimizde kullanılır.
+Özet halde rapor almaya benzetilebilir. Bir bilgi yığını için özet bir rapor isteyip almak gibi.
 
 Sum() ==> Verilerin toplamını alır.
 count() ==> Verilerin sayısını alır.
