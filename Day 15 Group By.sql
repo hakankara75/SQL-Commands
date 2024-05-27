@@ -1,7 +1,8 @@
 /*
 GROUP BY
 
-GROUP BY cümleciği bir SELECT ifadesinde satırları, sütunların değerlerine göre verileri özetlemek ve analiz etmek için GRUPLAMAK için kullanılır.
+GROUP BY cümleciği bir SELECT ifadesinde satırları, sütunların değerlerine göre 
+verileri özetlemek ve analiz etmek için GRUPLAMAK için kullanılır.
 
 GROUP BY cümleciği her grup başına bir satır döndürür.
 
