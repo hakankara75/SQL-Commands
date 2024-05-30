@@ -11,7 +11,6 @@ RIGHT JOIN: Bu işlem, sağ tablodan tüm kayıtları, sol tablodan ise ortak de
 Eğer soldaki tabloda eşleşmeyen satırlar varsa, bu satırların yerinde NULL değerler döner.
 FULL JOIN: Bu işlem, her iki tablodan da tüm kayıtları birleştirir, ortak değere sahip olmayan kayıtlar için boş değerler gösterir
 */
-
 CREATE TABLE musteriler (
     musteri_id INT PRIMARY KEY,
     musteri_ad VARCHAR(50) NOT NULL,
@@ -41,38 +40,38 @@ INSERT INTO siparisler ( siparis_adedi, siparis_tarihi, musteri_id, pide_cesidi)
 (3,'2024-04-06', 3, 'Kuşbaşılı'),
 (9,'2024-04-07', 1, 'Kaşarlı');
 
---Hiç sipariş vermemiş müşterilerin isimlerini ve adreslerini listeleyin.
---on ile ortak satırlar belirtilir
-SELECT m.musteri_ad, m.adres
-FROM musteriler m
-LEFT JOIN siparisler s ON m.musteri_id = s.musteri_id
-WHERE s.musteri_id IS NULL;
+--hiç sipariş vermemiş müşterilerin isimlerini ve adreslerini listele
+select M.musteri_ad, M.adres from musteriler M
+LEFT JOIN siparisler S ON M.musteri_id= S.musteri_id
+WHERE S.musteri_id IS NULL;
 
---7'den fazla sipariş veren müşterinin adını ve sipariş sayısını listeleyin.
-SELECT M.musteri_ad, M.musteri_id 
-FROM musteriler AS m
-INNER JOIN siparisler AS s ON m.musteri_id = s.musteri_id
-WHERE siparis_adedi>7
+select * from musteriler
 
---2 seferden fazla sipariş veren tüm müşterileri listeleyin.
-SELECT m.musteri_ad, m.adres, COUNT(*) AS siparis_sayisi
-FROM musteriler m
-JOIN siparisler s ON m.musteri_id = s.musteri_id
-GROUP BY m.musteri_id, m.musteri_ad, m.adres
-HAVING COUNT(*) > 2;
+--7'den fazla sipariş veren müşterinin adını ve sipariş sayısını listele
+select mus.musteri_ad,mus.musteri_id, sip.siparis_adedi from musteriler AS mus
+INNER JOIN siparisler AS sip ON mus.musteri_id= sip.musteri_id
+WHERE siparis_adedi>7;
 
---Her müşterinin adresini ve sipariş verdiği son tarihi (varsa) gösteren bir sorgu yazın.
-SELECT m.musteri_ad, m.adres, MAX(s.siparis_tarihi) AS son_siparis_tarihi
-FROM musteriler m
-RIGHT JOIN siparisler s ON m.musteri_id = s.musteri_id
+--2 seferden fazla sipariş veren tüm müşterileri listele
+select m.musteri_ad, COUNT(*) AS siparis_sayisi from musteriler m
+JOIN siparisler s ON m.musteri_id= s.musteri_id
+GROUP BY m.musteri_id, m.musteri_ad
+HAVING COUNt(*) >2;
+
+-- her müşterinin adresini ve sipariş verdiği son tarihi gösteren bir sorgu yazın
+select m.musteri_ad, m.adres, MAX(s.siparis_tarihi) as son_siparis_tarihi
+from musteriler m
+RIGHT JOIN siparisler s ON m.musteri_id= s.musteri_id
 GROUP BY m.musteri_id, m.adres
-ORDER BY m.musteri_id;
+order by m.musteri_id;
 
---Her müşterinin adını, adresini, sipariş verdiği pide türlerini ve sipariş tarihlerini (varsa) gösteren bir sorgu yazın.
-SELECT m.musteri_ad, m.adres, s.pide_cesidi, s.siparis_tarihi
-FROM musteriler m
-FULL JOIN siparisler s ON m.musteri_id = s.musteri_id
-ORDER BY m.musteri_id, s.siparis_tarihi;
+--her müşterinin adını, adresini, sipariş verdiği pide türünü ve sipariş tarihlerini listele
+select M.musteri_ad, M.adres, S.siparis_tarihi, S.pide_cesidi
+from musteriler M
+FULL JOIN siparisler S ON m.musteri_id= s.musteri_id
+ORDER BY M.musteri_id, S.siparis_tarihi;
+
+select * from musteriler
 
 
 

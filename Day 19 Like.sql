@@ -20,7 +20,6 @@ EXTRACT fonksiyonu, bir tarih veya saat değerinden belirli bir zaman öğesini
 Bu fonksiyon, tarih ve saat değerlerini analiz etmeyi ve işlemleri kolaylaştırmayı sağlar.
 */
 
-
 CREATE TABLE benzin_istasyonu_verileri (
     yakit_turu VARCHAR(20) NOT NULL,
     plaka VARCHAR(10) NOT NULL,
@@ -52,75 +51,64 @@ INSERT INTO benzin_istasyonu_verileri VALUES
     ('Kurşunsuz Benzin', '81 OQR 234', 35, '2024-11-15', 'Kredi Kartı'),
     ('Katkılı LPG', '14 PRS 567', 20, '2024-08-14', 'Kredi Kartı Taksitli'),
     ('Extra Dizel', '42 QRT 890', 60, '2024-05-13', 'Çek Karşılığı');
-	
-	select * from benzin_istasyonu_verileri
 
+select * from benzin_istasyonu_verileri;
 
---2024 Mayıs ayında hangi araçlar benzin almıştır?
-SELECT plaka, yakit_turu
-FROM benzin_istasyonu_verileri
-WHERE yakit_turu LIKE '%Benzin%'
+--2024 mayıs ayında hangi araçlar benzin almıştır
+select plaka, yakit_turu from benzin_istasyonu_verileri
+where yakit_turu LIKE '%Benzin%'
 AND tarih BETWEEN '2024-05-01' AND '2024-05-31';
 
---2024 Mayıs ayında yapılan işlemlerde plakası 34 ile başlayan kaç araç vardır?
-SELECT COUNT(*)
-FROM benzin_istasyonu_verileri
-WHERE tarih BETWEEN '2024-05-01' AND '2024-05-31'
+--2024 mayıs ayında yapılan işlemlerde plakası 34 ile başlayan kaç araç var
+select COUNT(*) from benzin_istasyonu_verileri
+where tarih BETWEEN '2024-05-01' AND '2024-05-31'
 AND plaka LIKE '34%';
 
---En son yakıt alan 75 palaklı araç hangisidir?
-SELECT *
-FROM benzin_istasyonu_verileri
-WHERE plaka LIKE '75%'
+--en son yakıt alan 75 plakalı araç hangisidir
+select * from benzin_istasyonu_verileri
+where plaka LIKE '75%'
 ORDER BY tarih DESC
 LIMIT 1;
 
---Ödeme şekli 'Kredi Kartı' olan işlemlerin detaylarını listeleyin.
-SELECT * 
-FROM benzin_istasyonu_verileri 
-WHERE odeme_sekli LIKE '%Kredi Kartı%';
+--ödeme şekli kredi kartı olan işlem detayların listele
+select * from benzin_istasyonu_verileri
+where odeme_sekli LIKE '%Kredi Kartı%';
 
 --8. ayda yakıt alan araçları ve yakıtlarını listele
-SELECT * 
-FROM benzin_istasyonu_verileri 
-WHERE EXTRACT(MONTH FROM tarih) = 8;
+select plaka, yakit_turu, tarih from benzin_istasyonu_verileri
+where EXTRACT(MONTH from tarih)=8;
 
---En Fazla Dizel Yakıt Alan Aracın Ödeme Şeklini ve plakasını listele
-SELECT odeme_sekli, plaka
-FROM benzin_istasyonu_verileri
-WHERE yakit_turu LIKE '%Dizel%'
-GROUP BY odeme_sekli, plaka
+--en fazla dizel yakıt alan aracın ödeme şeklini ve plakasını listele
+select plaka,odeme_sekli,yakit_turu from benzin_istasyonu_verileri
+where yakit_turu LIKE '%Dizel%'
+GROUP BY plaka,odeme_sekli,yakit_turu
 ORDER BY SUM(litre) DESC
 LIMIT 1;
 
---plakasının 2. rakamı 4 olan araçları listele
-SELECT plaka
-FROM benzin_istasyonu_verileri
-WHERE plaka LIKE'_4%'
+--Plakasının 2. rakamı 4 olan araçları listele
+select plaka from benzin_istasyonu_verileri
+where plaka LIKE '_4%';
 
 --ödeme şeklinin 3. harfi k olan plakaları listele
-SELECT plaka,odeme_sekli
-FROM benzin_istasyonu_verileri
-WHERE odeme_sekli LIKE '__k%';
+select plaka, odeme_sekli from benzin_istasyonu_verileri
+where odeme_sekli LIKE '__k%';
 
 --aldığı benzin litresi 3 ile başlayan plakaları listele
-SELECT plaka,litre
-FROM benzin_istasyonu_verileri
-WHERE litre LIKE '3%';
---hata verir. metin değeri dışındaki sayısal değerlerde çalışmaz
+select plaka, litre from benzin_istasyonu_verileri
+where litre LIKE '3%';
+--sayısal sütunlarda LIKE çalışmaz, hata verir
 
 --plakasında A ile H arasında olan araçları büyük küçük harf gözetmeksizin listele
-SELECT plaka
-FROM benzin_istasyonu_verileri
-WHERE plaka ~*'[a-h]';
---burada * regex ile küçük büyük harf gözetmeden arama yaptık
+select plaka from benzin_istasyonu_verileri
+where plaka ~*'[a-h]';
 
---plakasında A ile H arasında olan araçları listele
-SELECT plaka
-FROM benzin_istasyonu_verileri
-WHERE REGEXP_LIKE(plaka, '[A-H]');
+--plakasında A ile H arasaında olan araçları listele
+select plaka from benzin_istasyonu_verileri
+where REGEXP_LIKE(plaka, '[A-H]');
 
---Aldığı yakıt son harfi A ile L arasındaki harfler olan araçları ve yakıtları listele
-SELECT plaka, yakit_turu
-FROM benzin_istasyonu_verileri
-WHERE yakit_turu ~*'[A-L]$';
+--aldığı yakıt son harfi A ile L arasındaki harfler olan araçları ve yakıtları listele
+select plaka, yakit_turu from benzin_istasyonu_verileri
+where yakit_turu ~*'[A-L]$';
+
+
+
