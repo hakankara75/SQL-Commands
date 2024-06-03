@@ -2,9 +2,8 @@
 UPPER: Sütundaki verileri büyük harfle listeler.
 LOWER: Sütundaki verileri küçük harfle listeler.
 INITCAP: Sütundaki verilerin ilk harfini büyük, diğer harflerini ise küçük harfle listeler.
-DISTINCT: Sütundaki verileri tekrarlarsız listeler.
+DISTINCT: Sütundaki verileri tekrarsız listeler.
 */
-
 CREATE TABLE cep_telefonlari (
   marka VARCHAR(50) NOT NULL,
   model VARCHAR(100) NOT NULL
@@ -14,42 +13,47 @@ INSERT INTO cep_telefonlari (marka, model)
 VALUES
   ('Samsung', 'Galaxy S22'),
   ('Apple', 'iPhone 13 Pro Max'),
-  ('Huawei', 'P50 Pro'),
+  ('Huawei', 'P50 PRO'),
   ('Xiaomi', '12S Ultra'),
-  ('Oppo', 'Find X5 Pro'),
+  ('Oppo', 'FIND X5 Pro'),
   ('OnePlus', '10 Pro'),
   ('Google', 'Pixel 6 Pro'),
   ('Motorola', 'Edge 30 Ultra'),
   ('Realme', 'GT Neo 3'),
   ('Vivo', 'X80 Pro'),
-  ('Samsung', 'Galaxy S22 Ultra'),
+  ('Samsung', 'GALAXY S22 Ultra'),
   ('Apple', 'iPhone 14 Pro'),
-  ('Huawei', 'P60 Pro'),
+  ('Huawei', 'P60 PRO'),
   ('Xiaomi', '13 Pro'),
   ('Oppo', 'Find X6 Pro'),
   ('OnePlus', '11 Pro'),
   ('Google', 'Pixel 7 Pro'),
-  ('Motorola', 'Edge 40 Ultra'),
+  ('Motorola', 'EDGE 40 Ultra'),
   ('Realme', 'GT Neo 4');
   
-  SELECT * FROM cep_telefonlari;
+  select * from cep_telefonlari;
 
---Cep telefonu markalarını büyük harfle listeleyin.
-SELECT UPPER(marka) FROM cep_telefonlari;
+--cep telefonu markalarını büyük harfle listele
+select UPPER(marka) from cep_telefonlari;
 
---Cep telefonu modellerini küçük harfle listeleyin.
-SELECT LOWER(model) FROM cep_telefonlari;
+--cep telefonu modellerini küçük harfle listele
+select LOWER(model) from cep_telefonlari;
 
---Cep telefonu modellerini büyük harflerle, markalarını ilk harfleri büyük listele
-SELECT UPPER(marka), INITCAP(model) FROM cep_telefonlari;
+--cep telefonu modellerini büyük harf, markalarını küçük harf ile listele
+select LOWER(marka) as MARKA, UPPER (model ) as MODEL from cep_telefonlari;
 
---Cep telefonu markalarını ve modellerini ilk harfleri büyük, diğer harfleri küçük olacak şekilde aynı sütunda listeleyin.
-SELECT INITCAP(marka) || ' - ' || INITCAP(model)  as telefonlar FROM cep_telefonlari;
+--cep telefonu modellerinin ilk harfleri büyük sonrası küçük, markalarını küçük harf ile listele
+select LOWER(marka) as MARKA, INITCAP(model ) as MODEL from cep_telefonlari;
 
---Farklı tüm cep telefonu markalarını listeleyin.
-SELECT DISTINCT marka FROM cep_telefonlari;
+--cep telefonu marka ve modellerini ilk harfleri büyük sonrası küçük olarak listele
+select INITCAP(marka) as marka, INITCAP(model) as model from cep_telefonlari;
 
---Farklı tüm cep telefonu modellerini büyük harf olarak listeleyin.
-SELECT DISTINCT UPPER(model) FROM cep_telefonlari;
+--cep telefonu marka ve modellerini ilk harfleri büyük sonrası küçük olarak tek sütunda listele
+select INITCAP(marka)  || ' - '  || INITCAP(model) as telefonlar from cep_telefonlari;
 
+--farklı tüm cep telefon markalarını listele
+select DISTINCT marka from cep_telefonlari;
+
+--farklı tüm cep telefonu modellerini büyük harf ile listele
+select DISTINCT UPPER(model) from cep_telefonlari;
   
